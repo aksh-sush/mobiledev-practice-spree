@@ -7,9 +7,15 @@ appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.9.3"
 constraintlayout = "2.1.4"
+retrofit = "2.11.0"
+gson_converter = "2.11.0"
+retrofit-gson = "2.11.0"
+
 
 filament = "1.32.1"
-litertMetadata = "1.0.1"  # Set the appropriate version
+litertMetadata = "1.0.1"
+kotlin = "2.1.0"
+coreKtx = "1.15.0"  # Set the appropriate version
    # Set the appropriate version for Spline
 
 
@@ -26,12 +32,17 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 filament = "com.google.android.filament:filament-android:$versions.filament"
 filamentut = "com.google.android.filament:filament-utils-android:1.32.1"
 litert-metadata = { group = "com.google.ai.edge.litert", name = "litert-metadata", version.ref = "litertMetadata" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+gson_converter = { module = "com.squareup.retrofit2:converter-gson", version.ref = "gson_converter" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit-gson" }
 
 
 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 
 

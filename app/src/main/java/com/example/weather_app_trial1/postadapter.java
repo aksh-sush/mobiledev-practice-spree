@@ -15,13 +15,14 @@ import java.util.List;
 public class first_pg extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private postadapter postAdapter;  // Adapter to bind data to the RecyclerView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_pg); // Ensure this layout corresponds to FirstPgActivity
 
-        // Setup RecyclerView
+        // Initialize the RecyclerView
         recyclerView = findViewById(R.id.recycleable);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -39,16 +40,9 @@ public class first_pg extends AppCompatActivity {
             public void onResponse(Call<List<post>> call, Response<List<post>> response) {
                 if (response.isSuccessful()) {
                     List<post> postList = response.body();
-                    postadapter postAdapter = new postadapter(first_pg.this, postList) {
-                        @Override
-                        public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
-                            post post = postList.get(position);
-                            holder.id.setText(post.getId());
-                            holder.userid.setText(post.getUserId());
-                            holder.title.setText(post.getTitle());
-                            holder.bdy.setText(post.getBody());
-                        }
-                    };
+
+                    // Set the adapter to RecyclerView
+                    postAdapter = new postadapter(first_pg.this, postList);
                     recyclerView.setAdapter(postAdapter);
                 } else {
                     Toast.makeText(first_pg.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
