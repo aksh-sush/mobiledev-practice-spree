@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -72,12 +73,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             if (locationManager != null && ContextCompat.checkSelfPermission(
                     this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationManager.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER,
-                        1000,
-                        1,
-                        this
-                );
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, this);
+
             } else {
                 Toast.makeText(this, "Location permission not granted", Toast.LENGTH_SHORT).show();
             }
@@ -93,6 +91,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 "Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude(),
                 Toast.LENGTH_SHORT
         ).show();
+
+
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        Log.d("Location", "Latitude: " + latitude + ", Longitude: " + longitude);
 
         try {
             // Initialize Geocoder
@@ -123,3 +126,4 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {}
 }
+

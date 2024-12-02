@@ -2,63 +2,94 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:padding="16dp"
     tools:context=".first_pg">
 
+    <!-- Title for the weather screen -->
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/weather_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Post Title"
-        android:textSize="16sp"
-        tools:layout_editor_absoluteX="283dp"
-        tools:layout_editor_absoluteY="335dp" />
-
-    <TextView
-        android:id="@+id/id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Post ID"
-        android:textSize="14sp"
+        android:text="Weather Information"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.625"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="264dp" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
+    <!-- Temperature TextView -->
     <TextView
-        android:id="@+id/userid"
+        android:id="@+id/temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User ID"
-        android:textSize="16sp"
-        tools:layout_editor_absoluteX="283dp"
-        tools:layout_editor_absoluteY="377dp" />
+        android:text="Temperature: --°C"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weather_title"/>
 
+    <!-- Feels Like Temperature TextView -->
     <TextView
-        android:id="@+id/bdy"
+        android:id="@+id/feels_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="196dp"
-        android:text="Post Body"
-        android:textSize="14sp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="214dp" />
+        android:text="Feels Like: --°C"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/temp"/>
 
+    <!-- Weather Condition (description) -->
+    <TextView
+        android:id="@+id/weather_condition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Condition: --"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/feels_like"/>
+
+    <!-- Wind Speed TextView -->
+    <TextView
+        android:id="@+id/wind_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wind Speed: -- m/s"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weather_condition"/>
+
+    <!-- Humidity TextView -->
+    <TextView
+        android:id="@+id/humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Humidity: --%"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/wind_speed"/>
+
+    <!-- RecyclerView for list of weather items (like hourly forecast) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleable"
-        android:layout_width="409dp"
-        android:layout_height="731dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bdy"
-        app:layout_constraintVertical_bias="1.0" />
-
+        app:layout_constraintTop_toBottomOf="@id/humidity"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

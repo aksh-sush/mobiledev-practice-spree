@@ -16,6 +16,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    buildFeatures{
+        viewBinding =true
+    }
 
     buildTypes {
         release {
@@ -26,6 +29,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -41,6 +45,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.litert.metadata)
     implementation(libs.core.ktx)
+    implementation(libs.recyclerview)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
@@ -52,6 +57,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.retrofit)
     implementation (libs.retrofit.gson)
+    implementation(libs.recyclerview)
 
 
 

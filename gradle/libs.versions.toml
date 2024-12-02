@@ -15,8 +15,8 @@ retrofit-gson = "2.11.0"
 filament = "1.32.1"
 litertMetadata = "1.0.1"
 kotlin = "2.1.0"
-coreKtx = "1.15.0"  # Set the appropriate version
-   # Set the appropriate version for Spline
+coreKtx = "1.15.0"
+recyclerview = "1.3.2"
 
 
 
@@ -36,6 +36,7 @@ core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx"
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 gson_converter = { module = "com.squareup.retrofit2:converter-gson", version.ref = "gson_converter" }
 retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit-gson" }
+recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 
 
 

@@ -23,10 +23,10 @@
             </intent-filter>
         </activity>
 
-        <!-- First_pg Activity: This is not the launcher activity -->
+
         <activity
             android:name=".first_pg"
-            android:exported="false" />
+            android:exported="true" />
 
     </application>
 
