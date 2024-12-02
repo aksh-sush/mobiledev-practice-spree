@@ -29,6 +29,8 @@ public class Weatherdat {
     public Main getMain() {
         return main;
     }
+
+
 }
 
 // ListElement.java
@@ -127,6 +129,8 @@ class Main {
 
     public double getTempMax() { return tempMax; }
     public void setTempMax(double value) { this.tempMax = value; }
+
+
 }
 
 // Sys.java

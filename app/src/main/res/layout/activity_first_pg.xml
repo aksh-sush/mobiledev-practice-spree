@@ -21,66 +21,55 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <!-- Temperature TextView -->
+
+    <!-- Feels Like Temperature TextView -->
+
+
+    <!-- Humidity TextView -->
+
+    <!-- RecyclerView for list of weather items (like hourly forecast) -->
+
     <TextView
         android:id="@+id/temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:text="Temperature: --°C"
         android:textSize="18sp"
-        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/feels_like"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/weather_title"/>
+        app:layout_constraintTop_toBottomOf="@id/weather_title" />
 
-    <!-- Feels Like Temperature TextView -->
     <TextView
         android:id="@+id/feels_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Feels Like: --°C"
         android:textSize="18sp"
-        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/humidity"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/temp"/>
+        app:layout_constraintTop_toBottomOf="@id/temp"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <!-- Weather Condition (description) -->
-    <TextView
-        android:id="@+id/weather_condition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Condition: --"
-        android:textSize="18sp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/feels_like"/>
-
-    <!-- Wind Speed TextView -->
-    <TextView
-        android:id="@+id/wind_speed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Wind Speed: -- m/s"
-        android:textSize="18sp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/weather_condition"/>
-
-    <!-- Humidity TextView -->
     <TextView
         android:id="@+id/humidity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
         android:text="Humidity: --%"
         android:textSize="18sp"
-        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/recycleable"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/wind_speed"/>
+        app:layout_constraintTop_toBottomOf="@+id/feels_like" />
 
-    <!-- RecyclerView for list of weather items (like hourly forecast) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleable"
         android:layout_width="match_parent"

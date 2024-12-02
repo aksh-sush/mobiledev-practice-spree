@@ -7,15 +7,19 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
+import android.widget.VideoView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -26,46 +30,90 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-
 public class MainActivity extends AppCompatActivity implements LocationListener {
     Button button_loc;
     TextView textview_loc;
+    private VideoView videoView;
+
+    // Your Video URL
+    String videoUrl = "ordblackmountain.mp4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // Ensure this layout corresponds to your MainActivity
+        setContentView(R.layout.activity_main);
 
+        // on below line we are initializing our variables.
+        videoView = findViewById(R.id.idVideoView);
+
+        // Uri object to refer the
+        // resource from the videoUrl
+        Uri uri = Uri.parse(videoUrl);
+
+        // sets the resource from the
+        // videoUrl to the videoView
+        videoView.setVideoURI(uri);
+
+
+        // creating object of
+        // media controller class
+        MediaController mediaController = new MediaController(this);
+
+        // sets the anchor view
+        // anchor view for the videoView
+        mediaController.setAnchorView(videoView);
+
+        // sets the media player to the videoView
+        mediaController.setMediaPlayer(videoView);
+
+        // sets the media controller to the videoView
+        videoView.setMediaController(mediaController);
+
+        // starts the video
+        videoView.start();
+
+
+
+        // Delay for 3 seconds, then navigate to first_pg activity
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, first_pg.class);  // Corrected intent to point to MainActivity class
+                if (videoView.isPlaying()) {
+                    videoView.stopPlayback(); // Stop the video playback
+                }
+                Intent intent = new Intent(MainActivity.this, first_pg.class);
                 startActivity(intent);
-                finish();
+                finish(); // Close MainActivity
             }
-        }, 3000);
+
+        }, 50000);
 
         // Initialize views
         button_loc = findViewById(R.id.button_loc);
-        // Assuming there's a TextView to show the location
+        textview_loc = findViewById(R.id.user_hint); // Ensure correct ID
 
+        // Check and request location permissions
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
+        } else {
+            // Permission already granted
+            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
+        }
+
+
+        // Set click listener for location button
         button_loc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getLocation();
+                if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    getLocation();
+                } else {
+                    Toast.makeText(MainActivity.this, "Permission not granted", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
-        // Check location permissions
-        if (ContextCompat.checkSelfPermission(
-                MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    MainActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    1000
-            );
-        }
     }
 
     private void getLocation() {
@@ -75,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, this);
-
             } else {
                 Toast.makeText(this, "Location permission not granted", Toast.LENGTH_SHORT).show();
             }
@@ -85,29 +132,43 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     @Override
-    public void onLocationChanged(@NonNull Location location) {
-        Toast.makeText(
-                this,
-                "Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude(),
-                Toast.LENGTH_SHORT
-        ).show();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1000) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+                getLocation();
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Stop video playback if the activity is paused
+        if (videoView.isPlaying()) {
+            videoView.stopPlayback();
+            Log.d("VideoView", "Is playing: " + videoView.isPlaying());
 
+        }
+    }
+
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        Toast.makeText(this, "Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
 
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         Log.d("Location", "Latitude: " + latitude + ", Longitude: " + longitude);
 
         try {
-            // Initialize Geocoder
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
-            // Get a list of addresses based on latitude and longitude
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
-            // Ensure the list is not empty and get the first address
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             if (addresses != null && !addresses.isEmpty()) {
                 String address = addresses.get(0).getAddressLine(0);
-                textview_loc.setText(address); // Set the address to the TextView
+                textview_loc.setText(address);
             } else {
                 textview_loc.setText("No address found");
             }
@@ -126,4 +187,3 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {}
 }
-
