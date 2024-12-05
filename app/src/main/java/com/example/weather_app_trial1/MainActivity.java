@@ -24,9 +24,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // on below line we are initializing our variables.
+        //on below line we are initializing our variables.
         videoView = findViewById(R.id.idVideoView);
 
         // Uri object to refer the
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 finish(); // Close MainActivity
             }
 
-        }, 50000);
+        }, 5000);
 
         // Initialize views
         button_loc = findViewById(R.id.button_loc);
@@ -161,7 +164,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
-        Log.d("Location", "Latitude: " + latitude + ", Longitude: " + longitude);
+        Log.d("MainActivity", "Latitude: " + latitude + ", Longitude: " + longitude);
+
+        Intent intent = new Intent(MainActivity.this, mapclass.class);
+        intent.putExtra("LATITUDE", latitude);
+        intent.putExtra("LONGITUDE", longitude);
+        startActivity(intent);
+
+
 
         try {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -186,4 +196,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+
 }

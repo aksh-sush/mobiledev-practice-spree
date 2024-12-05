@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.weather_app_trial1.databinding.ActivityFirstPgBinding;
 
@@ -16,8 +14,17 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;public class first_pg extends AppCompatActivity {
 
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+
+
+import java.util.concurrent.Executors;
+public class first_pg extends AppCompatActivity {
+    private MapView mapView;
     private ActivityFirstPgBinding binding; // View binding for first_pg.xml
     private final ExecutorService executorService = Executors.newSingleThreadExecutor(); // Thread pool for async tasks
 
@@ -26,19 +33,30 @@ import java.util.concurrent.Executors;public class first_pg extends AppCompatAct
         super.onCreate(savedInstanceState);
         binding = ActivityFirstPgBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        // Configure osmdroid settings
+        Configuration.getInstance().setUserAgentValue(getPackageName());
+
+        // Initialize MapView
+        mapView = findViewById(R.id.mapView);
+
+        // Set the tile source (use OpenStreetMap tiles)
+        mapView.setTileSource(TileSourceFactory.MAPNIK);
+
+        // Enable multi-touch controls (zoom, pan)
+        mapView.setMultiTouchControls(true);
+
+
 
         Intent intent = getIntent();
-        double latitude = intent.getDoubleExtra("latitude", 0.0);
-        double longitude = intent.getDoubleExtra("longitude", 0.0);
+        double latitude = intent.getDoubleExtra("latitude", 13.0843);
+        double longitude = intent.getDoubleExtra("longitude", 80.2705);
+
 
         // Call the async method
         fetchWeatherDataAsync(latitude, longitude);
 
-        // Setup RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recycleable);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
     }
+
 
     // Asynchronous method to fetch weather data
     private void fetchWeatherDataAsync(double latitude, double longitude) {
@@ -73,13 +91,23 @@ import java.util.concurrent.Executors;public class first_pg extends AppCompatAct
 
                     // Update the UI on the main thread
                     runOnUiThread(() -> {
-
                         binding.temp.setText(temperature);
 
-                        binding.feelsLike.setText("Feels like: " + feelsLike + " °C");
                         binding.humidity.setText("Humidity: " + humidity + " %");
 
+                        // Set up the map with the weather location
+                        GeoPoint currentLocation = new GeoPoint(latitude, longitude);
+                        mapView.getController().setZoom(15.0); // Zoom level
+                        mapView.getController().setCenter(currentLocation); // Center map on current location
+
+                        // Add a marker at the current location
+                        Marker locationMarker = new Marker(mapView);
+                        locationMarker.setPosition(currentLocation);
+                        locationMarker.setTitle("Current Location");
+                        mapView.getOverlays().add(locationMarker); // Add marker to map
                     });
+
+
                 } else {
                     Log.e("TAG", "Failed response: " + response.message());
                 }
