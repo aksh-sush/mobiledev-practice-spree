@@ -37,14 +37,20 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     Button button_loc;
     TextView textview_loc;
     private VideoView videoView;
+    private  double latitude;
+    private  double longitude;
 
     // Your Video URL
     String videoUrl = "ordblackmountain.mp4";
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //on below line we are initializing our variables.
         videoView = findViewById(R.id.idVideoView);
@@ -85,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     videoView.stopPlayback(); // Stop the video playback
                 }
                 Intent intent = new Intent(MainActivity.this, first_pg.class);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
                 startActivity(intent);
                 finish(); // Close MainActivity
             }
@@ -103,6 +111,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             // Permission already granted
             Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
         }
+
+
+
 
 
         // Set click listener for location button
@@ -162,14 +173,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onLocationChanged(@NonNull Location location) {
         Toast.makeText(this, "Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
 
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
+         latitude = location.getLatitude();
+         longitude = location.getLongitude();
         Log.d("MainActivity", "Latitude: " + latitude + ", Longitude: " + longitude);
 
-        Intent intent = new Intent(MainActivity.this, mapclass.class);
-        intent.putExtra("LATITUDE", latitude);
-        intent.putExtra("LONGITUDE", longitude);
-        startActivity(intent);
 
 
 
@@ -188,8 +195,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
     }
 
+
     @Override
     public void onProviderDisabled(String provider) {}
+
+    public void useLocationData() {
+        Log.d("MainActivity", "Accessing Latitude: " + latitude + ", Longitude: " + longitude);
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+
 
     @Override
     public void onProviderEnabled(String provider) {}
@@ -199,3 +221,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 
 }
+
+
+
