@@ -46,12 +46,13 @@ public class first_pg extends AppCompatActivity {
 
         // Update the map with the location
         updateMap(latitude, longitude);
+        fetchWeatherDataAsync(latitude, longitude);
 
         // Fetch weather data
-        fetchWeatherDataAsync(latitude, longitude);
+
     }
 
-   
+
     private void updateMap(double latitude, double longitude) {
         if (mapView != null) {
             // Create a GeoPoint for the current location

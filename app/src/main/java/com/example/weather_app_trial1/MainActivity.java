@@ -24,40 +24,32 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
-    private Button buttonLoc;
-    private TextView textViewLoc;
+
     private double latitude;
     private double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         // Initialize views
-        buttonLoc = findViewById(R.id.button_loc);
-        textViewLoc = findViewById(R.id.user_hint);
+        setContentView(R.layout.activity_main);
 
-        // Check location permissions
+
+        // Request location permissions as the first step
         checkLocationPermissions();
-
-        // Set location button click listener
-        buttonLoc.setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                getLocation();
-            } else {
-                Toast.makeText(this, "Location permission is required", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void checkLocationPermissions() {
+        // Check if location permission is granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
+            // Request location permission if not granted
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
         } else {
+            // Permission already granted, get location
             Toast.makeText(this, "Location permission already granted", Toast.LENGTH_SHORT).show();
+            getLocation();
         }
     }
 
@@ -95,23 +87,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         longitude = location.getLongitude();
         Log.d("MainActivity", "Latitude: " + latitude + ", Longitude: " + longitude);
 
+        // Get the address from the latitude and longitude
         try {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            if (addresses != null && !addresses.isEmpty()) {
-                String address = addresses.get(0).getAddressLine(0);
-                textViewLoc.setText(address);
-            } else {
-                textViewLoc.setText("Address not found");
-            }
+
         } catch (IOException e) {
             e.printStackTrace();
-            textViewLoc.setText("Error retrieving address");
+            
         }
+
+        // Once the location is retrieved, start the next activity (first_pg)
+        Intent intent = new Intent(MainActivity.this, first_pg.class);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
+        startActivity(intent);
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
     }
 
@@ -122,5 +116,5 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onStatusChanged(String provider, int status, Bundle extras) {}
 
     @Override
-    public void onProviderEnabled(String provider) {}
+    public void onProviderEnabled(@NonNull String provider) {}
 }

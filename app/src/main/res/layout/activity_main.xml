@@ -1,43 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    android:id="@+id/main"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".vid">
 
-    <TextView
-        android:id="@+id/user_hint"
-        android:layout_width="173dp"
-        android:layout_height="84dp"
-        android:gravity="center|center_horizontal|center_vertical"
-        android:text="Hello main acti pg!"
-        android:textIsSelectable="true"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-
+    <!-- VideoView centered within ConstraintLayout -->
     <VideoView
         android:id="@+id/idVideoView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_centerInParent="true" />
-
-    <Button
-        android:id="@+id/button_loc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="287dp"
-        android:layout_marginEnd="149dp"
-        android:text="@string/button"
+        android:layout_width="444dp"
+        android:layout_height="307dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.384"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.513" />
+        app:layout_constraintVertical_bias="0.494" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
