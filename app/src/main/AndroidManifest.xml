@@ -15,15 +15,19 @@
 
         <!-- MainActivity: The launcher activity -->
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".vid"
+
+
+            android:configChanges="orientation|screenSize"
+
+        android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".vid"
-            android:exported="true">
+        <activity android:name=".MainActivity"
+            >
         </activity>
 
 
@@ -31,6 +35,8 @@
             android:name=".first_pg"
             android:exported="true"
             android:hardwareAccelerated="true"/>
+
+
         <meta-data android:name="org.osmdroid.config" android:value="true" />
 
     </application>

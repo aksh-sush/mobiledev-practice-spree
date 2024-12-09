@@ -48,7 +48,7 @@ public class first_pg extends AppCompatActivity {
         updateMap(latitude, longitude);
         fetchWeatherDataAsync(latitude, longitude);
 
-        // Fetch weather data
+
 
     }
 

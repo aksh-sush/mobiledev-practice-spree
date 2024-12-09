@@ -1,5 +1,4 @@
 package com.example.weather_app_trial1;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,7 +17,7 @@ public class vid extends AppCompatActivity {
 
         // Set the video URI (replace with your own video resource in 'res/raw')
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.lostorbinthemountains);
-        videoView.setVideoURI(uri);  // Set URI to VideoView
+        videoView.setVideoURI(uri);
 
         // Start the video automatically when activity is created
         videoView.start();

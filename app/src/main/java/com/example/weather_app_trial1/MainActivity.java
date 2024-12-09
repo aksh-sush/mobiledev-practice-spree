@@ -10,8 +10,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,14 +25,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     private double latitude;
     private double longitude;
+    private boolean firstPgStarted = false; // Flag to ensure FirstPg is started only once
+    private LocationManager locationManager; // Store the LocationManager instance
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Initialize views
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_first_pg);
 
         // Request location permissions as the first step
         checkLocationPermissions();
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     private void getLocation() {
         try {
-            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             if (locationManager != null && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
@@ -91,22 +90,37 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         try {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-
         } catch (IOException e) {
             e.printStackTrace();
-            
         }
 
-        // Once the location is retrieved, start the next activity (first_pg)
-        Intent intent = new Intent(MainActivity.this, first_pg.class);
-        intent.putExtra("latitude", latitude);
-        intent.putExtra("longitude", longitude);
-        startActivity(intent);
+        if (!firstPgStarted) {
+            firstPgStarted = true;
+
+            // Navigate to FirstPg
+            Intent intent = new Intent(MainActivity.this, first_pg.class);
+            intent.putExtra("latitude", latitude);
+            intent.putExtra("longitude", longitude);
+            startActivity(intent);
+
+            // Stop location updates after navigation
+            if (locationManager != null) {
+                locationManager.removeUpdates(this);
+            }
+
+            // Optionally finish MainActivity if it's no longer needed
+            finish();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
+
+        // Stop location updates when the activity is paused
+        if (locationManager != null) {
+            locationManager.removeUpdates(this);
+        }
     }
 
     @Override
